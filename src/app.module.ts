@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Administrator } from './administrators/administrators.entity';
+import { AdministratorModule } from './administrators/administrators.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -12,9 +14,13 @@ import { AppService } from './app.service';
       username: 'root',
       password: 'root',
       database: 'food_delivery',
-      entities: [],
+      entities: [
+        Administrator
+      ],
       synchronize: true
-    })
+    }),
+
+    AdministratorModule,
   ],
   controllers: [AppController],
   providers: [AppService],
