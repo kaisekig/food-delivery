@@ -10,4 +10,4 @@ import { AdministratorService } from "./administrators.service";
     controllers: [AdministratorsController],
     exports: [AdministratorService]
 })
-export class AdministratorModule {}
+export class AdministratorsModule {}

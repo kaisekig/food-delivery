@@ -4,8 +4,8 @@ import { CreateAdministratorDto } from 'src/administrators/dtos/create.administr
 import * as bcrypt from 'bcrypt';
 import { AdministratorModel } from 'src/administrators/administrators.model';
 
-@Controller('authentication')
-export class AuthenticationController {
+@Controller('auth')
+export class AuthController {
     constructor(
         private readonly administrator: AdministratorService
     ) {}

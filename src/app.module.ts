@@ -1,10 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Administrator } from './administrators/administrators.entity';
-import { AdministratorModule } from './administrators/administrators.module';
+import { AdministratorModel } from './administrators/administrators.model';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthenticationModule } from './authentication/authentication.module';
+import { AuthModule } from './auth/auth.module';
+
+import { Category } from './categories/categories.entity';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -16,13 +20,15 @@ import { AuthenticationModule } from './authentication/authentication.module';
       password: 'root',
       database: 'food_delivery',
       entities: [
-        Administrator
+        Administrator,
+        Category
       ],
       synchronize: true
     }),
-
-    AuthenticationModule,
-    AdministratorModule,
+    
+    AuthModule,
+    AdministratorModel,
+    CategoriesModule
   ],
   controllers: [AppController],
   providers: [AppService],
