@@ -9,6 +9,8 @@ import { AuthModule } from './auth/auth.module';
 
 import { Category } from './categories/categories.entity';
 import { CategoriesModule } from './categories/categories.module';
+import { User } from './users/users.entity';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -21,14 +23,17 @@ import { CategoriesModule } from './categories/categories.module';
       database: 'food_delivery',
       entities: [
         Administrator,
-        Category
+        User,
+        Category,
+        
       ],
       synchronize: true
     }),
     
     AuthModule,
     AdministratorModel,
-    CategoriesModule
+    UsersModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

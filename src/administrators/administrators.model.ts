@@ -9,7 +9,7 @@ export class AdministratorModel {
     updatedAt: Date;
 
     @Exclude()
-    password:string;
+    password: string;
 
     constructor(partial: Partial<AdministratorModel>) {
         Object.assign(this, partial);
