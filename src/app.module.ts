@@ -4,6 +4,7 @@ import { Administrator } from './administrators/administrators.entity';
 import { AdministratorModule } from './administrators/administrators.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AppService } from './app.service';
       synchronize: true
     }),
 
+    AuthenticationModule,
     AdministratorModule,
   ],
   controllers: [AppController],
