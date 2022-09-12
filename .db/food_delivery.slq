@@ -1,0 +1,399 @@
+-- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
+--
+-- Host: localhost    Database: food_delivery
+-- ------------------------------------------------------
+-- Server version	8.0.29
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `administrator`
+--
+
+DROP TABLE IF EXISTS `administrator`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `administrator` (
+  `administrator_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_active` tinyint NOT NULL DEFAULT '1',
+  `role` enum('super','moderator') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'moderator',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  PRIMARY KEY (`administrator_id`),
+  UNIQUE KEY `uq_administrator_username` (`username`),
+  UNIQUE KEY `IDX_9bd68c9cbb3712df77e60e27b7` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `administrator`
+--
+
+LOCK TABLES `administrator` WRITE;
+/*!40000 ALTER TABLE `administrator` DISABLE KEYS */;
+INSERT INTO `administrator` VALUES (1,'admin','$2b$10$h95pb0MV320j/XR0W4o4I.kCLDgxWcKWW3o1xe6MWbj.nkwdK5XzS',1,'moderator','2022-06-14 22:05:13','2022-06-14 22:05:13.324801'),(2,'moderator','$2b$10$DtUwrZ5cd4yMDyUUJWlsAuYG10znMhedAO9whmQPChH2KFmRbQXxa',1,'moderator','2022-06-15 15:52:40','2022-06-15 15:52:40.937566');
+/*!40000 ALTER TABLE `administrator` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cart`
+--
+
+DROP TABLE IF EXISTS `cart`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cart` (
+  `cart_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_id` int unsigned NOT NULL,
+  PRIMARY KEY (`cart_id`),
+  KEY `FK_f091e86a234693a49084b4c2c86` (`user_id`),
+  CONSTRAINT `FK_f091e86a234693a49084b4c2c86` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cart`
+--
+
+LOCK TABLES `cart` WRITE;
+/*!40000 ALTER TABLE `cart` DISABLE KEYS */;
+INSERT INTO `cart` VALUES (1,'2022-07-13 11:18:04',1),(2,'2022-07-13 11:19:31',1),(3,'2022-07-13 11:19:36',1),(4,'2022-07-13 11:22:09',1),(5,'2022-07-13 11:22:10',1),(6,'2022-07-13 11:23:02',1),(7,'2022-07-13 13:17:26',1),(8,'2022-08-30 13:32:04',2),(9,'2022-08-30 13:41:26',2),(10,'2022-08-30 13:46:25',2),(11,'2022-08-30 13:52:15',2),(12,'2022-08-30 13:53:33',2),(13,'2022-08-30 13:57:48',2),(14,'2022-08-31 13:43:15',2),(15,'2022-08-31 15:26:15',2);
+/*!40000 ALTER TABLE `cart` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cart_meal`
+--
+
+DROP TABLE IF EXISTS `cart_meal`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cart_meal` (
+  `cart_meal_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `quantity` int unsigned NOT NULL,
+  `cart_id` int unsigned NOT NULL,
+  `meal_id` int unsigned NOT NULL,
+  PRIMARY KEY (`cart_meal_id`),
+  KEY `FK_23497fb892cc0c37c32d27be6ff` (`meal_id`),
+  KEY `FK_f46ce52eb49f20d2e320fd14c39` (`cart_id`),
+  CONSTRAINT `FK_23497fb892cc0c37c32d27be6ff` FOREIGN KEY (`meal_id`) REFERENCES `meal` (`meal_id`),
+  CONSTRAINT `FK_f46ce52eb49f20d2e320fd14c39` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`cart_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cart_meal`
+--
+
+LOCK TABLES `cart_meal` WRITE;
+/*!40000 ALTER TABLE `cart_meal` DISABLE KEYS */;
+INSERT INTO `cart_meal` VALUES (2,1,6,30),(3,1,7,30),(4,4,8,29),(5,2,9,29),(6,2,10,29),(7,2,11,29),(8,2,12,29),(9,2,13,29),(10,2,14,29);
+/*!40000 ALTER TABLE `cart_meal` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `category`
+--
+
+DROP TABLE IF EXISTS `category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `category` (
+  `category_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `parent__category_id` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`category_id`),
+  UNIQUE KEY `IDX_9f16dbbf263b0af0f03637fa7b` (`title`),
+  KEY `FK_3e27b6657ae6412c72db5fe18c5` (`parent__category_id`),
+  CONSTRAINT `FK_3e27b6657ae6412c72db5fe18c5` FOREIGN KEY (`parent__category_id`) REFERENCES `category` (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `category`
+--
+
+LOCK TABLES `category` WRITE;
+/*!40000 ALTER TABLE `category` DISABLE KEYS */;
+INSERT INTO `category` VALUES (1,'Drinks',NULL),(2,'Breakfast',NULL),(3,'Sweets',NULL),(4,'Main dishes',NULL);
+/*!40000 ALTER TABLE `category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `image`
+--
+
+DROP TABLE IF EXISTS `image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `image` (
+  `image_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `meal_id` int unsigned NOT NULL,
+  PRIMARY KEY (`image_id`),
+  KEY `FK_c9e2a0c7fb36ae6699ddc92dfb2` (`meal_id`),
+  CONSTRAINT `FK_c9e2a0c7fb36ae6699ddc92dfb2` FOREIGN KEY (`meal_id`) REFERENCES `meal` (`meal_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `image`
+--
+
+LOCK TABLES `image` WRITE;
+/*!40000 ALTER TABLE `image` DISABLE KEYS */;
+INSERT INTO `image` VALUES (34,'202277-4042024114-vektor-grafika-slika-hamburger.jpg',29);
+/*!40000 ALTER TABLE `image` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ingredient`
+--
+
+DROP TABLE IF EXISTS `ingredient`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ingredient` (
+  `ingredient_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `spicy` tinyint unsigned NOT NULL,
+  `alergen` tinyint NOT NULL,
+  PRIMARY KEY (`ingredient_id`),
+  UNIQUE KEY `IDX_b6802ac7fbd37aa71d856a95d8` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ingredient`
+--
+
+LOCK TABLES `ingredient` WRITE;
+/*!40000 ALTER TABLE `ingredient` DISABLE KEYS */;
+INSERT INTO `ingredient` VALUES (20,'Beef',0,0),(21,'Cheese',0,0),(22,'Onion',0,0),(23,'Mayo',0,0),(24,'Tomato',0,0),(25,'Mustard',0,0),(26,'Cucumber',0,0),(27,'Ketchup',0,0),(28,'Chicken',0,0);
+/*!40000 ALTER TABLE `ingredient` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `meal`
+--
+
+DROP TABLE IF EXISTS `meal`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `meal` (
+  `meal_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `weight` int unsigned NOT NULL,
+  `spicy` tinyint unsigned NOT NULL,
+  `category_id` int unsigned NOT NULL,
+  PRIMARY KEY (`meal_id`),
+  UNIQUE KEY `IDX_95b36510bcf026f3dbc73bc71c` (`name`),
+  KEY `FK_b48a8ae5805bf20bce9963b6954` (`category_id`),
+  CONSTRAINT `FK_b48a8ae5805bf20bce9963b6954` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `meal`
+--
+
+LOCK TABLES `meal` WRITE;
+/*!40000 ALTER TABLE `meal` DISABLE KEYS */;
+INSERT INTO `meal` VALUES (29,'Chickenburger',220,1,4),(30,'Cheeseburger',200,0,4);
+/*!40000 ALTER TABLE `meal` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `meal_ingredient`
+--
+
+DROP TABLE IF EXISTS `meal_ingredient`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `meal_ingredient` (
+  `meal_id` int unsigned NOT NULL,
+  `ingredient_id` int unsigned NOT NULL,
+  PRIMARY KEY (`meal_id`,`ingredient_id`),
+  KEY `IDX_6063becc493c54a97605529923` (`meal_id`),
+  KEY `IDX_1ada138e49e922e071231f6b8a` (`ingredient_id`),
+  CONSTRAINT `FK_1ada138e49e922e071231f6b8a7` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredient` (`ingredient_id`),
+  CONSTRAINT `FK_6063becc493c54a976055299238` FOREIGN KEY (`meal_id`) REFERENCES `meal` (`meal_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `meal_ingredient`
+--
+
+LOCK TABLES `meal_ingredient` WRITE;
+/*!40000 ALTER TABLE `meal_ingredient` DISABLE KEYS */;
+INSERT INTO `meal_ingredient` VALUES (29,28),(30,20),(30,21);
+/*!40000 ALTER TABLE `meal_ingredient` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `meal_price`
+--
+
+DROP TABLE IF EXISTS `meal_price`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `meal_price` (
+  `meal_id` int unsigned NOT NULL,
+  `price_id` int unsigned NOT NULL,
+  PRIMARY KEY (`meal_id`,`price_id`),
+  KEY `IDX_20a7eb255502cc0ef21cad6852` (`meal_id`),
+  KEY `IDX_945fe751e0d9b773ab6a6bfb01` (`price_id`),
+  CONSTRAINT `FK_20a7eb255502cc0ef21cad68520` FOREIGN KEY (`meal_id`) REFERENCES `meal` (`meal_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_945fe751e0d9b773ab6a6bfb010` FOREIGN KEY (`price_id`) REFERENCES `price` (`price_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `meal_price`
+--
+
+LOCK TABLES `meal_price` WRITE;
+/*!40000 ALTER TABLE `meal_price` DISABLE KEYS */;
+INSERT INTO `meal_price` VALUES (29,20),(29,22),(29,23),(29,24),(29,27),(29,28),(29,29),(29,30),(29,31),(29,32),(29,33),(29,34),(29,35),(29,36),(30,21);
+/*!40000 ALTER TABLE `meal_price` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `order`
+--
+
+DROP TABLE IF EXISTS `order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order` (
+  `order_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_id` int unsigned NOT NULL,
+  `cart_id` int unsigned NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `number` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('pending','accepted','rejected','shipped','delivered') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  PRIMARY KEY (`order_id`),
+  UNIQUE KEY `REL_c99a206eb11ad45f6b7f04f2dc` (`cart_id`),
+  KEY `FK_199e32a02ddc0f47cd93181d8fd` (`user_id`),
+  CONSTRAINT `FK_199e32a02ddc0f47cd93181d8fd` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  CONSTRAINT `FK_c99a206eb11ad45f6b7f04f2dcc` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`cart_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order`
+--
+
+LOCK TABLES `order` WRITE;
+/*!40000 ALTER TABLE `order` DISABLE KEYS */;
+INSERT INTO `order` VALUES (1,'2022-07-13 13:10:53',1,6,'','','pending'),(2,'2022-07-13 13:17:48',1,7,'','','pending'),(3,'2022-08-30 13:33:46',2,8,'0','5600245780012496','pending'),(4,'2022-08-30 13:41:45',2,9,'0','4884917545122798','pending'),(5,'2022-08-30 13:46:30',2,10,'0','7789039426386315','pending'),(6,'2022-08-30 13:52:22',2,11,'fkljdkgjhfkhgjfkdhglkfdhgf','6462255473724969','pending'),(7,'2022-08-30 13:53:38',2,12,'fjhdsjhfjskhjkfsdhfjd','6524553118115690','pending'),(8,'2022-08-30 13:58:27',2,13,'Jurija Gagarina bb','8608289689615198','pending'),(9,'2022-08-31 13:43:22',2,14,'Jurija Gagarina bb','2540194319084708','pending');
+/*!40000 ALTER TABLE `order` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `price`
+--
+
+DROP TABLE IF EXISTS `price`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `price` (
+  `price_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `amount` decimal(7,2) NOT NULL,
+  PRIMARY KEY (`price_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `price`
+--
+
+LOCK TABLES `price` WRITE;
+/*!40000 ALTER TABLE `price` DISABLE KEYS */;
+INSERT INTO `price` VALUES (12,11.19),(13,11.19),(14,11.19),(15,11.19),(16,11.19),(17,11.19),(18,11.19),(19,11.19),(20,11.19),(21,11.19),(22,12.99),(23,13.99),(24,13.99),(25,33.20),(26,33.20),(27,33.22),(28,27.21),(29,27.21),(30,27.21),(31,28.00),(32,28.00),(33,28.00),(34,28.00),(35,28.00),(36,40.00);
+/*!40000 ALTER TABLE `price` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user` (
+  `user_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_active` tinyint NOT NULL DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `IDX_78a916df40e02a9deb1c4b75ed` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'user','$2b$10$dih/bMxab41zvjpQH3rn9OtGBwMm17Y1nDv5.L/bWFD2Zxq2BtrGC',1,'2022-06-27 13:24:39','2022-06-27 13:24:39.868953'),(2,'alex','$2b$10$t5pi7dVvAN2gIk1kjPjAoOu6FldZyvLJXQV7bfRfY7Yd7DZ0fUor.',1,'2022-08-30 13:31:11','2022-08-30 13:31:11.587650');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_token`
+--
+
+DROP TABLE IF EXISTS `user_token`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_token` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `is_valid` tinyint NOT NULL DEFAULT '1',
+  `user_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_79ac751931054ef450a2ee47778` (`user_id`),
+  CONSTRAINT `FK_79ac751931054ef450a2ee47778` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_token`
+--
+
+LOCK TABLES `user_token` WRITE;
+/*!40000 ALTER TABLE `user_token` DISABLE KEYS */;
+INSERT INTO `user_token` VALUES (1,'2022-09-05 11:39:23','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlkIjoyLCJ1c2VybmFtZSI6ImFsZXgiLCJpYXQiOjE2NjIzNzc5NjMuMTE5LCJleHAiOjE2NjQ5Njk5NjMuMTE5LCJpcCI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJ1YSI6IlBvc3RtYW5SdW50aW1lLzcuMjkuMiJ9.g6UalfKUliNmbM9-6fzH4EkTXh4X0aR0sHRslWqkdLk','2022-10-05 11:39:23',1,2),(2,'2022-09-05 12:39:11','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlkIjoyLCJ1c2VybmFtZSI6ImFsZXgiLCJpYXQiOjE2NjIzODE1NTEuNDk0LCJleHAiOjE2NjQ5NzM1NTEuNDk0LCJpcCI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJ1YSI6IlBvc3RtYW5SdW50aW1lLzcuMjkuMiJ9.DPwKJHqFVaZuHtJ7UFymMHEITK78zYe7SLjVu8S0R9w','2022-10-05 12:39:11',1,2);
+/*!40000 ALTER TABLE `user_token` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2022-09-07 15:01:11
