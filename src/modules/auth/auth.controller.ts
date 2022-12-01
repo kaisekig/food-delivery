@@ -90,7 +90,7 @@ export class AuthController {
         payload.id       = payloadRefresh.id;
         payload.username = payloadRefresh.username;
         payload.iat      = UnixTimestamp.now();
-        payload.exp      = UnixTimestamp.futureMinutes(5);
+        payload.exp      = UnixTimestamp.futureMinutes(30);
         payload.ip       = payloadRefresh.ip;
         payload.ua       = payloadRefresh.ua;
 

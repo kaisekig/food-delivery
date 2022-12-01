@@ -79,6 +79,7 @@ export class OrdersService {
                 'cart',
                 'cart.cartMeals',
                 'cart.cartMeals.meal',
+                'cart.cartMeals.meal.prices',
                 'user'
             ]
         });

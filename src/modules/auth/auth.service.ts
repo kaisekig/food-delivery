@@ -75,7 +75,7 @@ export class AuthService {
             throw new HttpException('User doesn\'t exist', HttpStatus.NOT_FOUND);
         }
 
-        if (!(bcrypt.compare(data.password, user.password))) {
+        if ((!await bcrypt.compare(data.password, user.password))) {
             throw new HttpException('Credentials doesn\'t match', HttpStatus.BAD_REQUEST);
         }
 
@@ -84,7 +84,7 @@ export class AuthService {
         payload.id          = user.userId;
         payload.username    = user.username;
         payload.iat         = UnixTimestamp.now();
-        payload.exp         = UnixTimestamp.futureMinutes(5);
+        payload.exp         = UnixTimestamp.futureMinutes(30);
         payload.ip          = this.req.ip;
         payload.ua          = this.req.headers['user-agent'];
 
